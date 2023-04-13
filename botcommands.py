@@ -88,3 +88,28 @@ class FactionCommands(commands.Cog, name="Faction Commands", description="Factio
         await ctx.guild.get_channel(faction_channel_id).delete()
         await ctx.guild.get_role(faction_role_id).delete()
         await ctx.send(f"Successfully deleted faction {faction_name}!")
+
+    @commands.command(name="renamefaction", description="Rename a faction")
+    async def rename_faction(self, ctx, name):
+        author = ctx.author
+        faction_id = sql.get_user_faction(author.id)
+
+        if faction_id == None:
+            await ctx.send("You're not in a faction.")
+            return
+        
+        if not sql.is_user_leader(author.id):
+            await ctx.send("You're not the leader of your faction.")
+            return
+        
+        if not sql.is_faction_unique(name):
+            await ctx.send("That faction already exists.")
+            return
+        old_faction_name = sql.get_faction_name(faction_id)
+        faction_channel_id = sql.get_channel_id(faction_id)
+        faction_role_id = sql.get_role_id(faction_id)
+
+        sql.rename_faction(faction_id, name)
+        await ctx.guild.get_role(faction_role_id).edit(name=name)
+        await ctx.guild.get_channel(faction_channel_id).edit(name=name)
+        await ctx.send(f"Successfully renamed faction {old_faction_name} to {name}!")
