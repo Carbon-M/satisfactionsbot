@@ -24,6 +24,7 @@ bot = commands.Bot(command_prefix=CMD_PREFIX, intents=intents)
 # Load Cogs
 async def add_cogs():
     await bot.add_cog(botcommands.AdminCommands(bot))
+    await bot.add_cog(botcommands.FactionCommands(bot))
 
 asyncio.run(add_cogs())
 

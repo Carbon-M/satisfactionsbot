@@ -98,8 +98,8 @@ def is_user_leader(user_id) -> bool:
         return result[0][0]
 
 # Set a user's faction ID, if they're already in a faction, update it
-def set_user_faction(user_id, faction_id):
-    execute_query("INSERT INTO users (user_id, faction_id) VALUES (%s, %s) ON DUPLICATE KEY UPDATE faction_id = %s", (user_id, faction_id, faction_id))
+def set_user_faction(user_id, faction_id, faction_leader):
+    execute_query("INSERT INTO users (user_id, faction_id, faction_leader) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE faction_id = %s", (user_id, faction_id, faction_leader, faction_id))
 
 # Faction related functions
 
@@ -155,6 +155,4 @@ def get_role_id(faction_id) -> int | None:
 
     return result[0][0]
 
-# Update a faction's channel and role IDs
-def set_faction_item(faction_id, channel_id, role_id):
-    execute_query("INSERT INTO faction_items (faction_id, channel_id, role_id) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE channel_id = %s, role_id = %s", (faction_id, channel_id, role_id, channel_id, role_id))
+# Update a faction's channel and role IDs/
