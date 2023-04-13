@@ -154,5 +154,3 @@ def get_role_id(faction_id) -> int | None:
         return None
 
     return result[0][0]
-
-# Update a faction's channel and role IDs/
